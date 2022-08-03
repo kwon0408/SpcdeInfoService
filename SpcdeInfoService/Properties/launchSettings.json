@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SpcdeInfoService": {
+      "commandName": "Project"
+    },
+    "프로필 1": {
+      "commandName": "Executable"
+    }
+  }
+}
