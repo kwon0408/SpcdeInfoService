@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SpcdeInfoService
 {
-    public class Information
+    public class SpcdeInfo
     {
         private readonly string apiKey;
         private string ApiKeyEncoded 
@@ -17,7 +17,7 @@ namespace SpcdeInfoService
         public static Version ApiVersion => new(1, 4);
 
 
-        public Information(string apiKey)
+        public SpcdeInfo(string apiKey)
         {
             this.apiKey =
                 apiKey

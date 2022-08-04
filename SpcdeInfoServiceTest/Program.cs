@@ -5,7 +5,7 @@ public partial class Program
 {
     public static void Main()
     {
-        Information info = new(YourApiKey);
+        SpcdeInfo info = new(YourApiKey);
         
         // 2018년부터는 토왕용사는 나오지 않음
         int year = 2022;
