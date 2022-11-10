@@ -85,8 +85,10 @@ namespace SpcdeInfoService
                 uri += $"&solMonth={solMonth}";
 
             var get = Get<JObject>(uri);
-            if (get?["response"]?["body"] is not JObject body
-                || body["items"]?["item"] is not JArray days)
+            if (get?["response"]?["body"] is not JObject body // get failed
+                || body["items"] is not JObject items // no items
+                || !items.HasValues // items is empty
+                || items["item"] is not JArray days)
             {
                 totalCount = 0;
                 return Array.Empty<DateInfo>();
