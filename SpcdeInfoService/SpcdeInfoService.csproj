@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
     <PackageProjectUrl>https://github.com/kwon0408/SpcdeInfoService</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kwon0408/SpcdeInfoService</RepositoryUrl>
+    <VersionPrefix>1.1.0</VersionPrefix>
+    <NeutralLanguage>ko-KR</NeutralLanguage>
+    <Description>공공데이터포털의 한국천문연구원_특일 정보 REST API에 대한 C# wrapper입니다.</Description>
+    <Copyright>https://github.com/kwon0408/SpcdeInfoService/blob/main/LICENSE.txt</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
