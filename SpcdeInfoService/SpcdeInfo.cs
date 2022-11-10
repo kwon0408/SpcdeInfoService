@@ -12,7 +12,7 @@ namespace SpcdeInfoService
     public class SpcdeInfo
     {
         private readonly string apiKey;
-        private string ApiKeyEncoded 
+        private string ApiKeyEncoded
             => apiKey.Replace("+", "%2B").Replace("/", "%2F").Replace("=", "%3D");
         public static Version ApiVersion => new(1, 4);
 
@@ -27,7 +27,7 @@ namespace SpcdeInfoService
 
         public DateInfo[] GetHoliDeInfo(
             out int totalCount,
-            int solYear, 
+            int solYear,
             int? solMonth = null,
             int numOfRows = 10,
             int pageNo = 1
@@ -36,7 +36,7 @@ namespace SpcdeInfoService
 
         public DateInfo[] GetRestDeInfo(
             out int totalCount,
-            int solYear, 
+            int solYear,
             int? solMonth = null,
             int numOfRows = 10,
             int pageNo = 1
@@ -45,7 +45,7 @@ namespace SpcdeInfoService
 
         public DateInfo[] GetAnniversaryInfo(
             out int totalCount,
-            int solYear, 
+            int solYear,
             int? solMonth = null,
             int numOfRows = 10,
             int pageNo = 1
@@ -79,23 +79,45 @@ namespace SpcdeInfoService
             int pageNo
             )
         {
+            totalCount = 0;
+
             string uri = $"https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/{endpoint}?" +
                          $"_type=json&serviceKey={ApiKeyEncoded}&numOfRows={numOfRows}&pageNo={pageNo}&solYear={solYear}";
             if (solMonth is not null)
-                uri += $"&solMonth={solMonth}";
+                uri += $"&solMonth={solMonth:00}";
 
             var get = Get<JObject>(uri);
-            if (get?["response"]?["body"] is not JObject body // get failed
-                || body["items"] is not JObject items // no items
-                || !items.HasValues // items is empty
-                || items["item"] is not JArray days)
+            if (get?["response"]?["body"] is not JObject body) // failed to GET
             {
-                totalCount = 0;
                 return Array.Empty<DateInfo>();
-            }            
-            totalCount = Convert.ToInt32((body["totalCount"] as JValue)?.Value);
-            return (from JObject d in days select d.ToObject<DateInfo>()).ToArray()
-                ?? Array.Empty<DateInfo>();
+            }
+
+            if (body["items"] is not JObject items) // "items" not found
+            {
+                return Array.Empty<DateInfo>();
+            }
+
+            if (!items.HasValues) // items is empty
+            {
+                return Array.Empty<DateInfo>();
+            }
+
+            if (items["item"] is not JArray days) // has only 1 item
+            {
+                if (items["item"] is not JObject item
+                    || item.ToObject<DateInfo>() is not DateInfo di)
+                    return Array.Empty<DateInfo>();
+
+                totalCount = 1;
+                return new DateInfo[1] { di };
+            }
+            else // has >= 2 items
+            {
+                totalCount = Convert.ToInt32((body["totalCount"] as JValue)?.Value);
+                return (from JObject d in days select d.ToObject<DateInfo>()).ToArray()
+                    ?? Array.Empty<DateInfo>();
+            }
+
         }
 
         private static T? Get<T>(string requestUri)
