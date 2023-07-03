@@ -23,7 +23,7 @@ namespace SpcdeInfoService
             {
                 try
                 {
-                    return TimeOnly.ParseExact(KstOriginal, "hhmm"); 
+                    return TimeOnly.ParseExact(KstOriginal.Trim(), "hhmm"); 
                 }
                 catch
                 {
